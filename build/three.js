@@ -330,6 +330,24 @@
 	var TangentSpaceNormalMap = 0;
 	var ObjectSpaceNormalMap = 1;
 
+	var ZeroStencilOp = 0;
+	var KeepStencilOp = 7680;
+	var ReplaceStencilOp = 7681;
+	var IncrementStencilOp = 7682;
+	var DecrementStencilOp = 7683;
+	var IncrementWrapStencilOp = 34055;
+	var DecrementWrapStencilOp = 34056;
+	var InvertStencilOp = 5386;
+
+	var NeverStencilFunc = 512;
+	var LessStencilFunc = 513;
+	var EqualStencilFunc = 514;
+	var LessEqualStencilFunc = 515;
+	var GreaterStencilFunc = 516;
+	var NotEqualStencilFunc = 517;
+	var GreaterEqualStencilFunc = 518;
+	var AlwaysStencilFunc = 519;
+
 	/**
 	 * @author alteredq / http://alteredqualia.com/
 	 * @author mrdoob / http://mrdoob.com/
@@ -12835,6 +12853,14 @@
 		this.depthTest = true;
 		this.depthWrite = true;
 
+		this.stencilFunc = AlwaysStencilFunc;
+		this.stencilRef = 0;
+		this.stencilMask = 0xff;
+		this.stencilFail = KeepStencilOp;
+		this.stencilZFail = KeepStencilOp;
+		this.stencilZPass = KeepStencilOp;
+		this.stencilWrite = false;
+
 		this.clippingPlanes = null;
 		this.clipIntersection = false;
 		this.clipShadows = false;
@@ -13033,6 +13059,14 @@
 			data.depthTest = this.depthTest;
 			data.depthWrite = this.depthWrite;
 
+			data.stencilWrite = this.stencilWrite;
+			data.stencilFunc = this.stencilFunc;
+			data.stencilRef = this.stencilRef;
+			data.stencilMask = this.stencilMask;
+			data.stencilFail = this.stencilFail;
+			data.stencilZFail = this.stencilZFail;
+			data.stencilZPass = this.stencilZPass;
+
 			// rotation (SpriteMaterial)
 			if ( this.rotation !== 0 ) data.rotation = this.rotation;
 
@@ -13124,6 +13158,14 @@
 			this.depthFunc = source.depthFunc;
 			this.depthTest = source.depthTest;
 			this.depthWrite = source.depthWrite;
+
+			this.stencilWrite = source.stencilWrite;
+			this.stencilFunc = source.stencilFunc;
+			this.stencilRef = source.stencilRef;
+			this.stencilMask = source.stencilMask;
+			this.stencilFail = source.stencilFail;
+			this.stencilZFail = source.stencilZFail;
+			this.stencilZPass = source.stencilZPass;
 
 			this.colorWrite = source.colorWrite;
 
@@ -19923,6 +19965,15 @@
 			depthBuffer.setTest( material.depthTest );
 			depthBuffer.setMask( material.depthWrite );
 			colorBuffer.setMask( material.colorWrite );
+
+			var stencilWrite = material.stencilWrite;
+			stencilBuffer.setTest( stencilWrite );
+			if ( stencilWrite ) {
+
+				stencilBuffer.setFunc( material.stencilFunc, material.stencilRef, material.stencilMask );
+				stencilBuffer.setOp( material.stencilFail, material.stencilZFail, material.stencilZPass );
+
+			}
 
 			setPolygonOffset( material.polygonOffset, material.polygonOffsetFactor, material.polygonOffsetUnits );
 
@@ -49050,6 +49101,22 @@
 	exports.RGBADepthPacking = RGBADepthPacking;
 	exports.TangentSpaceNormalMap = TangentSpaceNormalMap;
 	exports.ObjectSpaceNormalMap = ObjectSpaceNormalMap;
+	exports.ZeroStencilOp = ZeroStencilOp;
+	exports.KeepStencilOp = KeepStencilOp;
+	exports.ReplaceStencilOp = ReplaceStencilOp;
+	exports.IncrementStencilOp = IncrementStencilOp;
+	exports.DecrementStencilOp = DecrementStencilOp;
+	exports.IncrementWrapStencilOp = IncrementWrapStencilOp;
+	exports.DecrementWrapStencilOp = DecrementWrapStencilOp;
+	exports.InvertStencilOp = InvertStencilOp;
+	exports.NeverStencilFunc = NeverStencilFunc;
+	exports.LessStencilFunc = LessStencilFunc;
+	exports.EqualStencilFunc = EqualStencilFunc;
+	exports.LessEqualStencilFunc = LessEqualStencilFunc;
+	exports.GreaterStencilFunc = GreaterStencilFunc;
+	exports.NotEqualStencilFunc = NotEqualStencilFunc;
+	exports.GreaterEqualStencilFunc = GreaterEqualStencilFunc;
+	exports.AlwaysStencilFunc = AlwaysStencilFunc;
 	exports.Face4 = Face4;
 	exports.LineStrip = LineStrip;
 	exports.LinePieces = LinePieces;
